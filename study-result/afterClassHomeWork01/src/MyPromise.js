@@ -1,3 +1,5 @@
+// unhandleRejection 的处理
+let catchFlag = false;
 class MyPromise {
     constructor(fn) {
         this.value = null;
@@ -15,7 +17,11 @@ class MyPromise {
             this.status = 'rejected';
             this.value = err;
             setTimeout(()=>{
-                this.rejectedcallback.forEach(item => item(this.value))
+                if(!catchFlag && !this.rejectedcallback.length) {
+                    throw 'unhadlePromiserejection'
+                }
+                this.rejectedcallback.forEach(item => item(this.value));
+                catchFlag = false;
             }, 0)
         }
         try {
@@ -77,16 +83,23 @@ class MyPromise {
         })
     }
     catch(fn) {
+        catchFlag = true;
         return this.then(null, fn)
     }
     // 无论如何执行cb投传数据
     finally(cb) {
-        return this.then((v) => Promise.resolve(cb()).then(() => v), (err) => Promise.resolve(cb()).then(() => throw err))
+        return this.then((v) => Promise.resolve(cb()).then(() => v), (err) => Promise.resolve(cb()).then(() => { throw err }))
     }
 }
 MyPromise.resolve = function(v) {
     return new MyPromise((res) =>{
         res(v)
+    })
+}
+MyPromise.reject = function(v) {
+    catchFlag = true;
+    return new MyPromise((res, rej) =>{
+        rej(v)
     })
 }
 MyPromise.all = function(arr) {
