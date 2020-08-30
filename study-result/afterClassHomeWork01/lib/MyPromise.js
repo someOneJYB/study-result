@@ -6,6 +6,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+// unhandleRejection 的处理
+var catchFlag = false;
+
 var MyPromise = /*#__PURE__*/function () {
   function MyPromise(fn) {
     var _this = this;
@@ -31,9 +34,15 @@ var MyPromise = /*#__PURE__*/function () {
       _this.status = 'rejected';
       _this.value = err;
       setTimeout(function () {
+        if (!catchFlag && !_this.rejectedcallback.length) {
+          throw 'unhadlePromiserejection';
+        }
+
         _this.rejectedcallback.forEach(function (item) {
           return item(_this.value);
         });
+
+        catchFlag = false;
       }, 0);
     };
 
@@ -112,6 +121,7 @@ var MyPromise = /*#__PURE__*/function () {
   }, {
     key: "catch",
     value: function _catch(fn) {
+      catchFlag = true;
       return this.then(null, fn);
     } // 无论如何执行cb投传数据
 
@@ -124,9 +134,7 @@ var MyPromise = /*#__PURE__*/function () {
         });
       }, function (err) {
         return Promise.resolve(cb()).then(function () {
-          return function (e) {
-            throw e;
-          }(err);
+          throw err;
         });
       });
     }
@@ -138,6 +146,13 @@ var MyPromise = /*#__PURE__*/function () {
 MyPromise.resolve = function (v) {
   return new MyPromise(function (res) {
     res(v);
+  });
+};
+
+MyPromise.reject = function (v) {
+  catchFlag = true;
+  return new MyPromise(function (res, rej) {
+    rej(v);
   });
 };
 

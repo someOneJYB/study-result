@@ -1,0 +1,28 @@
+{
+  "name": "tools",
+  "version": "1.0.0",
+  "description": "异步编程在于执行的时间是不可控的，在 js 中主要包含的异步操作有 DOM 的操作、 io 请求、定时器的回调。 ####### js异步编程的形式 - 回调函数： 主要是通过执行执行操作结束后进行回调,比如下面的异步读取文件 ```js fs.readFile(filename, (err, data){     // 在回调中执行操作     cb() }) ``` 典型的思想有 thunk 处理异步利用的就是 callback ```js function thunkFy(asyncFn) {     return function() {         // 收集参数         let ctx = this;         let args = [].slice.call(arguments);         return function(cb) {             args.push(function() {                 cb.apply(null, arguments)             });             return asyncFn.call(ctx, ...args)         }     }",
+  "main": "code1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "npx babel src --out-dir lib"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-xlsx": "^0.15.0",
+    "prompts": "^2.3.2",
+    "xlsx": "^0.16.6"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.4",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-decorators": "^7.7.4",
+    "@babel/plugin-proposal-export-default-from": "^7.7.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
+    "@babel/plugin-proposal-throw-expressions": "^7.10.4",
+    "@babel/preset-env": "^7.11.0"
+  }
+}

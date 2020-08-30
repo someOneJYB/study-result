@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "node-xlsx": "^0.15.0",
+    "xlsx": "^0.16.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
