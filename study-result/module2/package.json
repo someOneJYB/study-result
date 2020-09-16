@@ -1,0 +1,20 @@
+{
+  "name": "module2",
+  "version": "1.0.0",
+  "description": "- let const 对比 var - 暂时性死区不允许变量提升，增加了块级作用域 - const 需要保证执行的内存区域不发生变化",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "flow": "yarn flow",
+    "compile": "yarn flow-remove-types . -d dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "flow-bin": "^0.132.0",
+    "flow-remove-types": "^2.132.0",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.7.2"
+  }
+}
