@@ -64,7 +64,7 @@ obj.fn()
 let a = {d: 1}
 let f = {g: { y: 123}}
 let w = Object.assign(a, f)
-f.g.y = 330
+f.g.y = 110
 // 输出合成后的 y
 console.log(w.g.y)
 //w.g.y = 110
